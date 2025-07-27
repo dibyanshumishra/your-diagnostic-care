@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/isLoggedin');
+const authMiddleware = require('../middlewares/isLoggedin');
 const history = require('../models/history-model');
 
 // @route   POST--> /api/history

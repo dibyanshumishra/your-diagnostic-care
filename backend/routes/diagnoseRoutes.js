@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const { mockDiseases } = require('../mockData');
+const { mockDiseases } = require('../src/mockdata');
 
 // Infermedica API configuration from environment variables
 const INFERMEDICA_API_URL = process.env.INFERMEDICA_API_URL;
