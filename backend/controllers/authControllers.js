@@ -89,3 +89,18 @@ module.exports.isLogin = async(req,res) => {
             res.status(500).json({ message: 'Server error' });
         }
 };
+
+module.exports.verifyUser = async(req,res) => {
+    // @desc    Verify user token from cookie and return user data
+    // If authMiddleware succeeds,req.user will be populated with the payload from the JWT.
+    res.status(200).json({ user: req.user });
+}
+
+module.exports.logout = async(req,res) => {
+    // @desc    Logout user and clear cookie
+    res.clearCookie('token', {
+        httpOnly: true,
+        expires: new Date(0) // Set cookie to expire immediately
+    });
+    res.status(200).json({ message: 'Logged out successfully' });
+}
