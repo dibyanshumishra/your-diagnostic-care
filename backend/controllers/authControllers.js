@@ -31,7 +31,7 @@ module.exports.isRegistered =  async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const user = await userModel.create({
+        user = await userModel.create({
             name,
             age,
             sex,
@@ -63,31 +63,45 @@ module.exports.isRegistered =  async (req, res) => {
     }
 };
 
-module.exports.isLogin = async(req,res) => {
+module.exports.isLogin = async (req, res) => {
     const { email, password } = req.body;
     
-        if (!email || !password) {
-            return res.status(400).json({ message: 'Please enter all fields' });
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Please enter all fields' });
+    }
+
+    try {
+        let user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credentials' });
         }
-    
-        try {
-            let user = await userModel.findOne({ email });
-            if (!user) {
-                return res.status(400).json({ message: 'Invalid credentials' });
-            }
-    
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                return res.status(400).json({ message: 'Invalid credentials' });
-            }
-            
-            const token = generateToken(user);
-            res.cookie("token",token);
-    
-        } catch (err) {
-            console.error('Server error during login:', err.message);
-            res.status(500).json({ message: 'Server error' });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials' });
         }
+        
+        const token = generateToken(user);
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+        });
+
+        res.status(200).json({
+            message: "Logged in successfully!",
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+            },
+        });
+
+    } catch (err) {
+        console.error('Server error during login:', err.message);
+        res.status(500).json({ message: 'Server error' });
+    }
 };
 
 module.exports.verifyUser = async(req,res) => {

@@ -5,6 +5,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 5000;
 const cookieparser = require('cookie-parser');
 const path = require('path');
+require('./config/mongoose');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
