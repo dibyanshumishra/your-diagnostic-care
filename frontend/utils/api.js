@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/api',
   withCredentials: true,
 });
 
@@ -11,7 +11,7 @@ API.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401 && error.config.url !== '/auth/login') {
       console.error('Unauthorized access or token expired. Logging out...');
-      window.location.href = '/login'; 
+      //window.location.href = '/login'; 
     }
     return Promise.reject(error);
   }

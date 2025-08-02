@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import API from '../utils/Api'
+import API from '../../utils/api'
 
 const AuthContext = createContext();
 
@@ -37,9 +37,9 @@ export const AuthProvider = ({ children }) => {
   }, []); // The empty dependency array ensures this runs only once
 
 
-  const register = async (name, age, email, password) => {
+  const register = async (name, age,sex, email, password) => {
     try {
-      const response = await API.post('/auth/register', { name, age, email, password });
+      const response = await API.post('/auth/register', { name, age,sex, email, password });
       setUser(response.data.user);
       return { success: true };
     } catch (err) {

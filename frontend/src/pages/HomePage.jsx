@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../utils/api';
+import API from '../../utils/api';
 import { useAuth } from '../contexts/AuthContext';
 import { Search, XCircle, HeartPulse, Stethoscope, History, Info, UserRound } from 'lucide-react';
 
