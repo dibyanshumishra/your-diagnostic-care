@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/user-model');
 const { isRegistered, isLogin, verifyUser, logout } = require('../controllers/authControllers');
-const authMiddleware = require('../middleware/isLoggedin');
+const authMiddleware = require('../middlewares/isLoggedin');
 
 //POST--> /api/auth/register
 router.post('/register', isRegistered);

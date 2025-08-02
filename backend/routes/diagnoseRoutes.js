@@ -12,8 +12,6 @@ if (!INFERMEDICA_API_URL || !INFERMEDICA_APP_ID || !INFERMEDICA_APP_KEY) {
     console.error('Infermedica API credentials are not fully defined in environment variables.');
 }
 
-// @route   POST /api/diagnose
-// @desc    Get disease suggestions from Infermedica based on selected symptom IDs, sex, and age
 router.post('/', async (req, res) => {
     const { symptomIds, sex, age } = req.body;
 
@@ -70,6 +68,22 @@ router.post('/', async (req, res) => {
 
     } catch (err) {
         console.error('Error fetching diagnosis from Infermedica:', err.response?.data || err.message);
+
+         // Fallback: Try to match user's symptoms with mockDiseases
+        if (symptomIds && Array.isArray(symptomIds)) {
+            // Find diseases that have at least one matching symptom
+            const matchedDiseases = mockDiseases.filter(disease =>
+                disease.commonSymptoms.some(symptom =>
+                    symptomIds.map(s => s.toLowerCase()).includes(symptom.toLowerCase())
+                )
+            );
+
+            if (matchedDiseases.length > 0) {
+                return res.json(matchedDiseases);
+            }
+        }
+
+
         res.status(err.response?.status || 500).json({
             message: 'Failed to get diagnosis from external API.',
             details: err.response?.data || err.message

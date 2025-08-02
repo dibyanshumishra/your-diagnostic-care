@@ -50,9 +50,9 @@ module.exports.isRegistered =  async (req, res) => {
             message: "User registered successfully!",
             token,
             user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
+                id: user._id,
+                name: user.name,
+                email: user.email,
             },
         });
 
