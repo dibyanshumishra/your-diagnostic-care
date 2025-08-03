@@ -1,34 +1,23 @@
+require('dotenv').config();
 const express = require('express');
-const app = express();
-require('dotenv').config(); 
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const PORT = process.env.PORT || 5000;
-const cookieparser = require('cookie-parser');
-const path = require('path');
+const corsOptions = require('./middlewares/cors');
 require('./config/mongoose');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended:true }));
-app.use(cookieparser());
-app.use(express.static(path.join(__dirname,"public")));
+const app = express();
 
-const corsOptions = require('./middlewares/cors');
 app.use(cors(corsOptions));
 
-const authRoutes = require('./routes/authRoutes');
-const symptomsRoutes = require('./routes/symptomsRoutes');
-const diagnoseRoutes = require('./routes/diagnoseRoutes');
-const historyRoutes = require('./routes/historyRoutes');
+app.use(express.json()); 
+app.use(cookieParser()); 
 
-app.use('/api/auth', authRoutes);
-app.use('/api/symptoms', symptomsRoutes);
-app.use('/api/diagnose', diagnoseRoutes);
-app.use('/api/history', historyRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Symptom Checker Backend is running!');
-});
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/symptoms', require('./routes/symptomsRoutes'));
+app.use('/api/history', require('./routes/historyRoutes'));
+app.use('/api/diagnose', require('./routes/diagnoseRoutes'));
 
-app.listen(PORT, () => {
-    console.log(`Backend server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));

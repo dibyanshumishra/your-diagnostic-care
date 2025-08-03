@@ -5,6 +5,9 @@ import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
 import HistoryPage from './pages/HistoryPage';
 
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+
 // PrivateRoute component to protect routes
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();

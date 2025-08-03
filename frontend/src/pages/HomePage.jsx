@@ -16,22 +16,29 @@ function HomePage() {
   const [isLoadingDiagnosis, setIsLoadingDiagnosis] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchSymptoms = async () => {
+  const fetchSymptoms = useCallback(async () => {
+      // Guard clause: Do not run this function if the user or user.age is not available yet.
+      if (!user || !user.age) {
+        return;
+      }
       setIsLoadingSymptoms(true);
       setError(null);
       try {
-        const response = await API.get('/symptoms');
-        setAvailableSymptoms(response.data);
+        const response = await API.get(`/symptoms?age=${user.age}`);
+        const data = await response.json();
+        setAvailableSymptoms(data);
+        
       } catch (err) {
         console.error('Error fetching symptoms:', err.response?.data?.message || err.message);
         setError('Failed to load symptoms. Please try again later.');
       } finally {
         setIsLoadingSymptoms(false);
       }
-    };
+  }, [user]);
+    
+  useEffect(() => {
     fetchSymptoms();
-  }, []);
+  }, [fetchSymptoms]);
 
   const addSymptom = (symptom) => {
     if (!selectedSymptoms.some(s => s.id === symptom.id)) {

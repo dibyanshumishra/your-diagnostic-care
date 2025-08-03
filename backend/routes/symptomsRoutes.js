@@ -15,6 +15,11 @@ if (!INFERMEDICA_API_URL || !INFERMEDICA_APP_ID || !INFERMEDICA_APP_KEY) {
 // @route   GET /api/symptoms
 // @desc    Get all available symptoms from Infermedica API
 router.get('/', async (req, res) => {
+    const { age } = req.query;
+    if (!age) {
+        return res.status(400).json({ message: 'Age is a required parameter.' });
+    }
+    
     try {
         const response = await axios.get(`${INFERMEDICA_API_URL}/symptoms`, {
             headers: {
@@ -24,7 +29,7 @@ router.get('/', async (req, res) => {
             },
             params: {
                 // You can add parameters here to filter symptoms if needed,
-                // e.g., 'sex_filter=male', 'age_filter=30'
+                'age.value': age
             }
         });
 

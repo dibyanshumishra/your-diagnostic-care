@@ -42,8 +42,9 @@ module.exports.isRegistered =  async (req, res) => {
         const token = generateToken(user);
 
         res.cookie("token", token, {
-            httpOnly: true, // Prevents client-side JS from accessing the cookie
-            secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
         });
         
         res.status(201).json({
@@ -85,7 +86,8 @@ module.exports.isLogin = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
+            sameSite: 'None',
         });
 
         res.status(200).json({

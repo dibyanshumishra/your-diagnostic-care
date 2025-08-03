@@ -4,6 +4,10 @@ const userModel = require("../models/user-model");
 const isLoggedin = async(req, res, next) => {
     const token = req.cookies.token;
 
+    // --- DEBUGGING LINE ---
+        // This will show us exactly what the server sees in the cookie.
+        console.log('Received token from cookie:', token);
+
     if (!token) {
         return res.status(401).json({ message: 'No token, authorization denied' });
     }
