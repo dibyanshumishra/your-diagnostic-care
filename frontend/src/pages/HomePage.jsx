@@ -25,7 +25,7 @@ function HomePage() {
       setError(null);
       try {
         const response = await API.get(`/symptoms?age=${user.age}`);
-        const data = await response.json();
+        const data = await response.data;
         setAvailableSymptoms(data);
         
       } catch (err) {

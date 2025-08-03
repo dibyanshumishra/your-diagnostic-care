@@ -32,7 +32,9 @@ router.post('/', async (req, res) => {
     try {
         const response = await axios.post(`${INFERMEDICA_API_URL}/diagnosis`, {
             sex: sex,
-            age: age,
+            age: {
+                value: age
+            },
             evidence: evidence,
         }, {
             headers: {
