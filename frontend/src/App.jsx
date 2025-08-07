@@ -14,8 +14,8 @@ const PrivateRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
       </div>
     );
   }
@@ -27,7 +27,7 @@ function App() {
   return (
     <Router>
       <AuthProvider> {/* Wrap the entire app with AuthProvider */}
-        <div className="min-h-screen bg-gray-100 font-inter">
+        <div className="w-full min-h-screen bg-slate-50 font-sans">
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<AuthPage type="login" />} />
